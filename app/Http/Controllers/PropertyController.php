@@ -15,7 +15,7 @@ class PropertyController extends Controller
     {
         // Load media collections and agent
         $property->load(['agent']);
-        
+
         $images = $property->getMedia('images');
         $videos = $property->getMedia('videos');
 

@@ -67,6 +67,7 @@ class PropertyResource extends Resource implements HasShieldPermissions
             ->components([
                 Section::make('Basic Information')
                     ->description('General details about the property.')
+                    ->columnSpanFull()
                     ->components([
                         Grid::make(2)
                             ->components([
@@ -91,6 +92,7 @@ class PropertyResource extends Resource implements HasShieldPermissions
 
                 Section::make('Pricing & Status')
                     ->description('Set the price and availability.')
+                    ->columnSpanFull()
                     ->components([
                         Grid::make(3)
                             ->components([
@@ -112,7 +114,8 @@ class PropertyResource extends Resource implements HasShieldPermissions
                     ]),
 
                 Section::make('Property Details')
-                    ->description('Specifications of the luxury space.')
+                    ->description('Specifications and amenities of the luxury space.')
+                    ->columnSpanFull()
                     ->components([
                         Grid::make(3)
                             ->components([
@@ -130,21 +133,52 @@ class PropertyResource extends Resource implements HasShieldPermissions
                                     ->minValue(0),
                             ]),
                         
-                        TextInput::make('location')
-                            ->nullable()
-                            ->maxLength(255),
+                        Grid::make(2)
+                            ->components([
+                                TextInput::make('location')
+                                    ->nullable()
+                                    ->maxLength(255),
 
-                        Select::make('agent_id')
-                            ->relationship('agent', 'name')
-                            ->required()
-                            ->searchable()
-                            ->default(auth()->id())
-                            ->disabled(fn () => ! auth()->user()->hasRole('admin'))
-                            ->dehydrated(),
+                                Select::make('agent_id')
+                                    ->relationship('agent', 'name')
+                                    ->required()
+                                    ->searchable()
+                                    ->default(auth()->id())
+                                    ->disabled(fn () => ! auth()->user()->hasRole('admin'))
+                                    ->dehydrated(),
+                            ]),
+
+                        Section::make('Amenities')
+                            ->description('Check all that apply')
+                            ->compact()
+                            ->components([
+                                Grid::make(4)
+                                    ->components([
+                                        Toggle::make('has_pool')->label('Swimming Pool'),
+                                        Toggle::make('has_gym')->label('Gym / Fitness Center'),
+                                        Toggle::make('has_garden')->label('Private Garden'),
+                                        Toggle::make('has_solar_panels')->label('Solar Panels'),
+                                        Toggle::make('has_parking')->label('Ample Parking'),
+                                        Toggle::make('has_security')->label('24/7 Security'),
+                                        Toggle::make('has_wifi')->label('High-speed WiFi'),
+                                        Toggle::make('is_furnished')->label('Fully Furnished'),
+                                        Toggle::make('has_air_conditioning')->label('Air Conditioning'),
+                                        Toggle::make('has_balcony')->label('Balcony / Terrace'),
+                                        Toggle::make('has_cctv')->label('CCTV Surveillance'),
+                                        Toggle::make('has_backup_generator')->label('Backup Generator'),
+                                        Toggle::make('has_water_tank')->label('Water Storage Tank'),
+                                        Toggle::make('has_elevator')->label('Elevator / Lift'),
+                                        Toggle::make('has_borehole')->label('Borehole Water'),
+                                        Toggle::make('has_staff_quarters')->label('Staff Quarters'),
+                                        Toggle::make('has_fireplace')->label('Fireplace'),
+                                        Toggle::make('has_pets_allowed')->label('Pets Allowed'),
+                                    ]),
+                            ]),
                     ]),
 
                 Section::make('Media')
                     ->description('Upload high-quality images and videos.')
+                    ->columnSpanFull()
                     ->components([
                         SpatieMediaLibraryFileUpload::make('images')
                             ->collection('images')
@@ -159,6 +193,26 @@ class PropertyResource extends Resource implements HasShieldPermissions
                             ->acceptedFileTypes(['video/mp4', 'video/quicktime'])
                             ->maxSize(20480) // 20MB
                             ->columnSpanFull(),
+                    ]),
+
+                Section::make('Search Engine Optimization (SEO)')
+                    ->description('Optimize how this property appears in search engine results.')
+                    ->columnSpanFull()
+                    ->components([
+                        TextInput::make('seo_title')
+                            ->label('SEO Title')
+                            ->placeholder('e.g. Luxury 5 Bedroom Villa in Runda for Sale')
+                            ->maxLength(60),
+                        
+                        RichEditor::make('seo_description')
+                            ->label('SEO Description')
+                            ->placeholder('Brief summary for search engines...')
+                            ->maxLength(160),
+
+                        TextInput::make('seo_keywords')
+                            ->label('SEO Keywords')
+                            ->placeholder('e.g. luxury, villa, runda, for sale')
+                            ->maxLength(255),
                     ]),
             ]);
     }

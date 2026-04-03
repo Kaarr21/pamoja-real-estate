@@ -85,12 +85,17 @@
     }
     .stitch-page { 
         font-family: 'Manrope', sans-serif; 
-        background-color: #f9f9f9;
-        color: #1a1c1c;
+        background-color: hsl(var(--bg));
+        color: hsl(var(--text));
+        transition: background-color 0.5s ease, color 0.5s ease;
     }
     .stitch-page ::selection {
         background-color: #c5a059;
         color: #4e3700;
+    }
+    .dark .stitch-page {
+        background-color: hsl(var(--bg));
+        color: hsl(var(--text));
     }
 </style>
 
@@ -110,28 +115,28 @@
             <span class="font-label uppercase tracking-[0.3rem] text-[10px] text-primary mb-6 block">
                 {{ $property->location ?? 'Exclusive Location' }}
             </span>
-            <h1 class="font-headline text-5xl md:text-7xl lg:text-8xl tracking-tighter leading-[0.9] mb-8">
+            <h1 class="font-headline text-5xl md:text-7xl lg:text-8xl tracking-tighter leading-[0.9] mb-8 dark:text-white">
                 {!! nl2br(e(wordwrap($property->title, 15, "\n"))) !!}
             </h1>
             <p class="font-headline text-3xl md:text-4xl text-primary mb-12">KES {{ number_format($property->price) }}</p>
             
-            <div class="flex gap-10 font-body text-sm border-t border-outline-variant pt-8 mb-12">
+            <div class="flex gap-10 font-body text-sm border-t border-outline-variant/30 dark:border-white/10 pt-8 mb-12">
                 @if($property->bedrooms)
                 <div class="flex flex-col">
-                    <span class="opacity-50 text-[10px] uppercase tracking-widest mb-1">Bedrooms</span>
-                    <span class="font-bold">{{ str_pad($property->bedrooms, 2, '0', STR_PAD_LEFT) }}</span>
+                    <span class="opacity-50 text-[10px] uppercase tracking-widest mb-1 dark:text-white/60">Bedrooms</span>
+                    <span class="font-bold dark:text-white">{{ str_pad($property->bedrooms, 2, '0', STR_PAD_LEFT) }}</span>
                 </div>
                 @endif
                 @if($property->bathrooms)
                 <div class="flex flex-col">
-                    <span class="opacity-50 text-[10px] uppercase tracking-widest mb-1">Bathrooms</span>
-                    <span class="font-bold">{{ str_pad($property->bathrooms, 2, '0', STR_PAD_LEFT) }}</span>
+                    <span class="opacity-50 text-[10px] uppercase tracking-widest mb-1 dark:text-white/60">Bathrooms</span>
+                    <span class="font-bold dark:text-white">{{ str_pad($property->bathrooms, 2, '0', STR_PAD_LEFT) }}</span>
                 </div>
                 @endif
                 @if($property->sqft)
                 <div class="flex flex-col">
-                    <span class="opacity-50 text-[10px] uppercase tracking-widest mb-1">Area</span>
-                    <span class="font-bold">{{ number_format($property->sqft) }} Sq Ft</span>
+                    <span class="opacity-50 text-[10px] uppercase tracking-widest mb-1 dark:text-white/60">Area</span>
+                    <span class="font-bold dark:text-white">{{ number_format($property->sqft) }} Sq Ft</span>
                 </div>
                 @endif
             </div>
@@ -139,7 +144,7 @@
             <a href="mailto:{{ $property->agent->email }}" class="bg-primary hover:bg-surface-tint text-on-primary px-12 py-5 font-label text-xs uppercase tracking-[0.2rem] transition-all w-fit no-underline text-center">ACQUIRE THE MANOR</a>
         </div>
         
-        <div class="lg:col-span-7 aspect-[4/3] md:aspect-[16/10] overflow-hidden order-1 lg:order-2">
+        <div class="lg:col-span-7 aspect-[4/3] md:aspect-[16/10] overflow-hidden order-1 lg:order-2 border border-outline-variant/30 dark:border-white/10">
             <img alt="{{ $property->title }}" class="w-full h-full object-cover" src="{{ $images->first()?->getUrl() ?? 'https://via.placeholder.com/1200x800' }}" />
         </div>
     </section>
@@ -148,14 +153,14 @@
     @auth
         @if(auth()->user()->hasRole('admin') || auth()->id() === $property->agent_id)
         <section class="px-6 md:px-12 mb-32 max-w-[1920px] mx-auto">
-            <div class="py-12 border-y border-outline-variant/50">
+            <div class="py-12 border-y border-outline-variant/30 dark:border-white/10">
                 <div class="flex flex-col md:flex-row justify-between items-start md:items-center gap-10">
                     <div>
                         <h3 class="font-label uppercase tracking-[0.3rem] text-primary text-[10px] mb-2">Curation Studio</h3>
-                        <p class="font-headline text-3xl">Administrative Controls</p>
+                        <p class="font-headline text-3xl dark:text-white">Administrative Controls</p>
                     </div>
                     <div class="flex flex-wrap gap-4">
-                        <a href="/admin/properties/{{ $property->id }}/edit" class="border border-outline px-8 py-3 font-label text-[10px] uppercase tracking-widest hover:bg-surface-container transition-colors no-underline text-on-surface">Edit Artifact</a>
+                        <a href="/admin/properties/{{ $property->id }}/edit" class="border border-outline px-8 py-3 font-label text-[10px] uppercase tracking-widest hover:bg-surface-container transition-colors no-underline text-on-surface dark:text-white dark:border-white/30 dark:hover:bg-white/10">Edit Artifact</a>
                     </div>
                 </div>
             </div>
@@ -166,23 +171,79 @@
     <!-- Narrative Section -->
     <section class="max-w-[1920px] mx-auto px-6 md:px-12 mb-32">
         <div class="max-w-4xl mx-auto text-center">
-            <h2 class="font-headline text-4xl mb-8 italic">The Narrative</h2>
-            <div class="font-body text-on-surface-variant leading-relaxed text-lg text-left md:text-center prose prose-stone mx-auto">
+            <h2 class="font-headline text-4xl mb-8 italic dark:text-white">The Narrative</h2>
+            <div class="font-body text-on-surface-variant dark:text-on-surface leading-relaxed text-lg text-left md:text-center prose prose-stone dark:prose-invert mx-auto">
                 {!! $property->description !!}
             </div>
         </div>
     </section>
 
+    <!-- Amenities Section -->
+    @php
+        $amenitiesMap = [
+            'has_pool' => ['label' => 'Swimming Pool', 'icon' => 'pool'],
+            'has_gym' => ['label' => 'Fitness Center', 'icon' => 'fitness_center'],
+            'has_garden' => ['label' => 'Private Garden', 'icon' => 'yard'],
+            'has_solar_panels' => ['label' => 'Solar Energy', 'icon' => 'solar_power'],
+            'has_parking' => ['label' => 'Ample Parking', 'icon' => 'local_parking'],
+            'has_security' => ['label' => '24/7 Security', 'icon' => 'security'],
+            'has_wifi' => ['label' => 'High-speed WiFi', 'icon' => 'wifi'],
+            'is_furnished' => ['label' => 'Fully Furnished', 'icon' => 'chair'],
+            'has_air_conditioning' => ['label' => 'Air Conditioning', 'icon' => 'ac_unit'],
+            'has_balcony' => ['label' => 'Private Balcony', 'icon' => 'balcony'],
+            'has_cctv' => ['label' => 'CCTV Surveillance', 'icon' => 'videocam'],
+            'has_backup_generator' => ['label' => 'Power Backup', 'icon' => 'electric_bolt'],
+            'has_water_tank' => ['label' => 'Water Storage', 'icon' => 'water_drop'],
+            'has_elevator' => ['label' => 'Passenger Lift', 'icon' => 'elevator'],
+            'has_borehole' => ['label' => 'Borehole Water', 'icon' => 'water_well'],
+            'has_staff_quarters' => ['label' => 'Staff Quarters', 'icon' => 'meeting_room'],
+            'has_fireplace' => ['label' => 'Cozy Fireplace', 'icon' => 'fireplace'],
+            'has_pets_allowed' => ['label' => 'Pets Allowed', 'icon' => 'pets'],
+        ];
+
+        $hasAmenities = false;
+        foreach ($amenitiesMap as $field => $data) {
+            if ($property->$field) {
+                $hasAmenities = true;
+                break;
+            }
+        }
+    @endphp
+
+    @if($hasAmenities)
+    <section class="max-w-[1920px] mx-auto px-6 md:px-12 mb-32">
+        <div class="py-20 border-t border-b border-outline-variant/30 dark:border-white/10">
+            <h2 class="font-headline text-4xl md:text-5xl italic mb-16 text-center dark:text-white">The Amenities</h2>
+            <div class="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-6 gap-y-16 gap-x-8">
+                @foreach($amenitiesMap as $field => $data)
+                    @if($property->$field)
+                        <div class="flex flex-col items-center text-center group">
+                            <div class="w-16 h-16 rounded-full border border-outline-variant/30 dark:border-white/10 flex items-center justify-center mb-6 group-hover:border-primary group-hover:bg-primary-container/10 transition-all">
+                                <span class="material-symbols-outlined text-3xl group-hover:scale-110 transition-transform dark:text-white">
+                                    {{ $data['icon'] }}
+                                </span>
+                            </div>
+                            <span class="font-label text-[10px] uppercase tracking-[0.2rem] text-on-surface-variant dark:text-on-surface group-hover:text-primary transition-colors">
+                                {{ $data['label'] }}
+                            </span>
+                        </div>
+                    @endif
+                @endforeach
+            </div>
+        </div>
+    </section>
+    @endif
+
     <!-- Visual Archive -->
     <section class="mb-32 overflow-hidden">
         <div class="px-6 md:px-12 mb-12 flex justify-between items-end max-w-[1920px] mx-auto">
-            <h2 class="font-headline text-4xl md:text-5xl italic">The Visual Archive</h2>
+            <h2 class="font-headline text-4xl md:text-5xl italic dark:text-white">The Visual Archive</h2>
             <div class="flex gap-4">
-                <button @click="scrollArchive(-1)" class="w-12 h-12 border border-outline-variant flex items-center justify-center hover:bg-surface-container transition-colors">
-                    <span class="material-symbols-outlined">chevron_left</span>
+                <button @click="scrollArchive(-1)" class="w-12 h-12 border border-outline-variant/30 dark:border-white/10 flex items-center justify-center hover:bg-surface-container transition-colors dark:hover:bg-white/10 dark:text-white">
+                    <span class="material-symbols-outlined font-light">chevron_left</span>
                 </button>
-                <button @click="scrollArchive(1)" class="w-12 h-12 border border-outline-variant flex items-center justify-center hover:bg-surface-container transition-colors">
-                    <span class="material-symbols-outlined">chevron_right</span>
+                <button @click="scrollArchive(1)" class="w-12 h-12 border border-outline-variant/30 dark:border-white/10 flex items-center justify-center hover:bg-surface-container transition-colors dark:hover:bg-white/10 dark:text-white">
+                    <span class="material-symbols-outlined font-light">chevron_right</span>
                 </button>
             </div>
         </div>
@@ -190,18 +251,17 @@
         <div x-ref="archiveScroll" class="flex gap-6 overflow-x-auto px-6 md:px-12 hide-scrollbar pb-8 snap-x snap-mandatory">
             <!-- Images -->
             @foreach($images as $image)
-            <div class="w-[85vw] sm:w-[45vw] md:w-[20vw] lg:w-[15vw] flex-shrink-0 snap-center aspect-[4/5] md:aspect-[3/4]">
+            <div class="w-[85vw] sm:w-[45vw] md:w-[20vw] lg:w-[15vw] flex-shrink-0 snap-center aspect-[4/5] md:aspect-[3/4] border border-outline-variant/30 dark:border-white/10">
                 <img class="w-full h-full object-cover" alt="Gallery image" src="{{ $image->getUrl() }}" loading="lazy" />
             </div>
             @endforeach
 
             <!-- Videos -->
             @foreach($videos as $video)
-            <div class="w-[85vw] sm:w-[45vw] md:w-[20vw] lg:w-[15vw] flex-shrink-0 snap-center relative group cursor-pointer aspect-[4/5] md:aspect-[3/4]" 
+            <div class="w-[85vw] sm:w-[45vw] md:w-[20vw] lg:w-[15vw] flex-shrink-0 snap-center relative group cursor-pointer aspect-[4/5] md:aspect-[3/4] border border-outline-variant/30 dark:border-white/10" 
                  @click="currentVideoUrl = '{{ $video->getUrl() }}'; videoModalOpen = true">
-                <!-- Video Thumbnail (Use first frame or placeholder) -->
-                <div class="w-full h-full bg-surface-container-high flex items-center justify-center relative overflow-hidden">
-                    <!-- We can use a video tag for the thumbnail but pause it, or just use a placeholder. Using video element without controls for preview -->
+                <!-- Video Thumbnail -->
+                <div class="w-full h-full bg-surface-container-high dark:bg-white/5 flex items-center justify-center relative overflow-hidden">
                     <video class="w-full h-full object-cover opacity-80 group-hover:opacity-100 transition-opacity" muted loop playsinline>
                         <source src="{{ $video->getUrl() }}#t=0.1" type="{{ $video->mime_type }}">
                     </video>
@@ -218,32 +278,32 @@
     </section>
 
     <!-- Details/Agent Section -->
-    <section class="py-24 border-t border-outline-variant/30 px-6 md:px-12">
+    <section class="py-24 border-t border-outline-variant/30 dark:border-white/10 px-6 md:px-12">
         <div class="max-w-[1920px] mx-auto grid grid-cols-1 gap-16 md:gap-12 md:grid-cols-2">
-            <div class="flex flex-col h-full border-l border-outline-variant/30 pl-8">
+            <div class="flex flex-col h-full border-l border-outline-variant/30 dark:border-white/10 pl-8">
                 <span class="font-label text-[10px] tracking-[0.2rem] text-primary uppercase mb-6 block">Property Status</span>
-                <h4 class="font-headline text-3xl mb-8">{{ $property->status->getLabel() }}</h4>
-                <p class="font-body text-sm text-on-surface-variant italic mt-auto">Details curated precisely for the distinguished buyer.</p>
+                <h4 class="font-headline text-3xl mb-8 dark:text-white">{{ $property->status->getLabel() }}</h4>
+                <p class="font-body text-sm text-on-surface-variant dark:text-on-surface italic mt-auto">Details curated precisely for the distinguished buyer.</p>
             </div>
-            <div class="flex flex-col h-full border-l border-outline-variant/30 pl-8">
+            <div class="flex flex-col h-full border-l border-outline-variant/30 dark:border-white/10 pl-8">
                 <span class="font-label text-[10px] tracking-[0.2rem] text-primary uppercase mb-6 block">Agent Assignment</span>
-                <h4 class="font-headline text-3xl mb-8">{{ $property->agent->name }}</h4>
-                <p class="font-body text-[10px] text-on-surface-variant uppercase tracking-[0.2rem] mt-auto">Global Luxury Division</p>
+                <h4 class="font-headline text-3xl mb-8 dark:text-white">{{ $property->agent->name }}</h4>
+                <p class="font-body text-[10px] text-on-surface-variant dark:text-on-surface uppercase tracking-[0.2rem] mt-auto">Global Luxury Division</p>
             </div>
         </div>
     </section>
 
     <!-- Final CTA -->
-    <section class="py-32 px-6 md:px-12 text-center max-w-[1920px] mx-auto border-t border-outline-variant/30 mt-12">
-        <h2 class="font-headline text-4xl md:text-6xl mb-16 italic max-w-4xl mx-auto leading-tight">The opportunity to redefine your horizon.</h2>
+    <section class="py-32 px-6 md:px-12 text-center max-w-[1920px] mx-auto border-t border-outline-variant/30 dark:border-white/10 mt-12">
+        <h2 class="font-headline text-4xl md:text-6xl mb-16 italic max-w-4xl mx-auto leading-tight dark:text-white">The opportunity to redefine your horizon.</h2>
         <div class="flex flex-col md:flex-row justify-center gap-6 mb-24">
             <a href="mailto:{{ $property->agent->email }}" class="bg-primary hover:bg-surface-tint text-on-primary px-16 py-6 font-label uppercase tracking-[0.2rem] text-xs transition-all no-underline inline-block">ACQUIRE THE MANOR</a>
             <button class="border border-primary text-primary hover:bg-primary hover:text-white px-16 py-6 font-label uppercase tracking-[0.2rem] text-xs transition-all">REQUEST DOSSIER</button>
         </div>
         <div class="flex justify-center gap-10 flex-wrap opacity-60">
-            <span class="font-label text-[10px] tracking-[0.3rem] text-on-surface">#LUXURYREALESTATE</span>
-            <span class="font-label text-[10px] tracking-[0.3rem] text-on-surface">#PAMOJA</span>
-            <span class="font-label text-[10px] tracking-[0.3rem] text-on-surface">#CURATEDLIVING</span>
+            <span class="font-label text-[10px] tracking-[0.3rem] text-on-surface dark:text-white">#LUXURYREALESTATE</span>
+            <span class="font-label text-[10px] tracking-[0.3rem] text-on-surface dark:text-white">#PAMOJA</span>
+            <span class="font-label text-[10px] tracking-[0.3rem] text-on-surface dark:text-white">#CURATEDLIVING</span>
         </div>
     </section>
 
