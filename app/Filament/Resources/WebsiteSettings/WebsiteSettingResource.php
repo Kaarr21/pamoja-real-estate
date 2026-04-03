@@ -37,6 +37,11 @@ class WebsiteSettingResource extends Resource
                         Textarea::make('hero_subtitle'),
                         TextInput::make('hero_cta_primary')->required(),
                         TextInput::make('hero_cta_secondary')->required(),
+                        \Filament\Forms\Components\SpatieMediaLibraryFileUpload::make('hero_image')
+                            ->collection('hero_image')
+                            ->image()
+                            ->maxSize(10240)
+                            ->columnSpanFull(),
                     ])->columns(2),
 
                 Section::make('Contact Information')

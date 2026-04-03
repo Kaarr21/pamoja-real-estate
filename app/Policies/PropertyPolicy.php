@@ -14,62 +14,62 @@ class PropertyPolicy
     
     public function viewAny(AuthUser $authUser): bool
     {
-        return $authUser->can('view_any_properties');
+        return $authUser->can('ViewAny:Property');
     }
 
     public function view(AuthUser $authUser, Property $property): bool
     {
-        return $authUser->can('view_properties') && ($authUser->id === $property->agent_id || $authUser->hasRole('admin'));
+        return $authUser->can('View:Property');
     }
 
     public function create(AuthUser $authUser): bool
     {
-        return $authUser->can('create_properties');
+        return $authUser->can('Create:Property');
     }
 
     public function update(AuthUser $authUser, Property $property): bool
     {
-        return $authUser->can('update_properties') && ($authUser->id === $property->agent_id || $authUser->hasRole('admin'));
+        return $authUser->can('Update:Property');
     }
 
     public function delete(AuthUser $authUser, Property $property): bool
     {
-        return $authUser->can('delete_properties') && ($authUser->id === $property->agent_id || $authUser->hasRole('admin'));
+        return $authUser->can('Delete:Property');
     }
 
     public function deleteAny(AuthUser $authUser): bool
     {
-        return $authUser->can('delete_any_properties');
+        return $authUser->can('DeleteAny:Property');
     }
 
     public function restore(AuthUser $authUser, Property $property): bool
     {
-        return $authUser->can('restore_properties') && ($authUser->id === $property->agent_id || $authUser->hasRole('admin'));
+        return $authUser->can('Restore:Property');
     }
 
     public function forceDelete(AuthUser $authUser, Property $property): bool
     {
-        return $authUser->can('force_delete_properties') && ($authUser->id === $property->agent_id || $authUser->hasRole('admin'));
+        return $authUser->can('ForceDelete:Property');
     }
 
     public function forceDeleteAny(AuthUser $authUser): bool
     {
-        return $authUser->can('force_delete_any_properties');
+        return $authUser->can('ForceDeleteAny:Property');
     }
 
     public function restoreAny(AuthUser $authUser): bool
     {
-        return $authUser->can('restore_any_properties');
+        return $authUser->can('RestoreAny:Property');
     }
 
     public function replicate(AuthUser $authUser, Property $property): bool
     {
-        return $authUser->can('replicate_properties') && ($authUser->id === $property->agent_id || $authUser->hasRole('admin'));
+        return $authUser->can('Replicate:Property');
     }
 
     public function reorder(AuthUser $authUser): bool
     {
-        return $authUser->can('reorder_properties');
+        return $authUser->can('Reorder:Property');
     }
 
 }

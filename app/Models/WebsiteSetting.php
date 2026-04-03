@@ -3,9 +3,13 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
+use Spatie\MediaLibrary\HasMedia;
+use Spatie\MediaLibrary\InteractsWithMedia;
 
-class WebsiteSetting extends Model
+class WebsiteSetting extends Model implements HasMedia
 {
+    use InteractsWithMedia;
+
     protected $fillable = [
         'site_name',
         'logo_text',
@@ -23,6 +27,16 @@ class WebsiteSetting extends Model
         'meta_description',
         'footer_copy',
     ];
+
+    /**
+     * Register media collections.
+     */
+    public function registerMediaCollections(): void
+    {
+        $this->addMediaCollection('hero_image')
+            ->singleFile()
+            ->acceptsMimeTypes(['image/jpeg', 'image/png', 'image/webp']);
+    }
 
     /**
      * Get the current settings record.

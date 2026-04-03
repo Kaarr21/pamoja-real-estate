@@ -20,6 +20,10 @@ class Property extends Model implements HasMedia
         'description',
         'price',
         'status', // App\Enums\PropertyStatus
+        'bedrooms',
+        'bathrooms',
+        'sqft',
+        'is_featured',
         'location',
         'agent_id',
     ];
